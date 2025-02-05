@@ -12,7 +12,7 @@ export default async function middleware(
 
   // const isAuthenticated = !!token;
 
-
+  return NextResponse.next()
 
   // if (
   //   pathname == "/" ||
@@ -23,11 +23,11 @@ export default async function middleware(
   // ) {
   //   return NextResponse.next();
   // }
-  // const authMiddleware = withAuth({
-  //   pages: {
-  //     signIn: "/login",
-  //   },
-  // });
+  const authMiddleware = withAuth({
+    pages: {
+      signIn: "/login",
+    },
+  });
   // @ts-expect-error
   return authMiddleware(req, event);
 }

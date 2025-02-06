@@ -1,5 +1,4 @@
 import prisma from "@/prisma/client";
-import { hasAllKeys } from "@/utils/basicUtility";
 import { GlobalError } from "@/utils/Exceptions";
 import { Blog } from "@prisma/client";
 
@@ -81,11 +80,11 @@ export async function updateBlog(blog: Blog) {
   return updatedBlog;
 }
 
-export async function deleteBlog(blog: Blog) {
+export async function deleteBlog(blogId: number) {
   // TODO(After auth check is this his own blog)
   const deletedBlog = await prisma.blog.delete({
     where: {
-      id: blog.id,
+      id: blogId,
     },
   });
   return deletedBlog;

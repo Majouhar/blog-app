@@ -5,7 +5,7 @@ import { User } from "@prisma/client";
 import { hashPassword, verifyPassword } from "./authAction";
 
 export async function getUser(email: string, isAuthorize: boolean = false) {
-  const user = prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       email,
     },

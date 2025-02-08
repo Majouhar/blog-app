@@ -3,6 +3,7 @@ import { hasAllKeys } from "@/utils/basicUtility";
 import { GlobalError } from "@/utils/Exceptions";
 import { User } from "@prisma/client";
 import { hashPassword, verifyPassword } from "./authAction";
+import { StatusCode } from "@/utils/constants";
 
 export async function getUser(email: string, isAuthorize: boolean = false) {
   const user = await prisma.user.findUnique({
@@ -48,6 +49,7 @@ export async function createUser(user: User) {
   try {
     const exisitngUser = await getUser(user.email);
   } catch (error) {
+    console.log(error)
     if (!(error instanceof GlobalError)) {
       throw Error("Some Error Occured");
     }

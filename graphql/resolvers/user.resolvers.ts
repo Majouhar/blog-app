@@ -5,7 +5,7 @@ import {
 } from "@/lib/userActions";
 import { User } from "@prisma/client";
 
-export const resolvers = {
+export const userResolvers = {
   Query: {
     async getUser(_: any, { email }: { email: string }) {
       const user = await getUser(email);

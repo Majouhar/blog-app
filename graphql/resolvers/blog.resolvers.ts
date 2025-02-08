@@ -7,7 +7,7 @@ import {
 } from "@/lib/blogActions";
 import { dateScalar } from "../scalar";
 
-export const resolvers = {
+export const blogResolvers = {
   Date: dateScalar,
   Query: {
     getAllPublishedBlogs: async (_: any, { filter, page, size }: any) => {

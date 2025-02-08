@@ -2,16 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import AppoloWrapper from "@/providers/AppoloWrapper";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+import NextAuthWrapper from "@/providers/NextAuthWrapper";
+import ToastProvider from "@/providers/ToastProvider";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -25,10 +19,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AppoloWrapper>{children}</AppoloWrapper>
+      <body className="px-5">
+        <NextAuthWrapper>
+          <AppoloWrapper>
+            <ToastProvider>
+              <Header />
+              {children}
+              <Footer />
+            </ToastProvider>
+          </AppoloWrapper>
+        </NextAuthWrapper>
       </body>
     </html>
   );

@@ -8,12 +8,9 @@ interface NextContext {
 
 const { handleRequest } = createYoga<NextContext>({
   schema: schema,
-
-  // While using Next.js file convention for routing, we need to configure Yoga to use the correct endpoint
   graphqlEndpoint: "/api/graphql",
-
-  // Yoga needs to know how to create a valid Next response
   fetchAPI: { Response },
+  maskedErrors: process.env.NODE_ENV !== "development",
 });
 
 export {

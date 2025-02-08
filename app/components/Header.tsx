@@ -5,7 +5,7 @@ import UserDetails from "./UserDetails";
 
 function Header() {
   return (
-    <div className="flex align-center justify-between  w-full px-6 py-2">
+    <header className="flex align-center justify-between  w-full px-6 py-2">
       <Image
         className="cursor-pointer"
         alt="bloghub logo"
@@ -14,7 +14,7 @@ function Header() {
         height={30}
       />
       <UserDetails />
-    </div>
+    </header>
   );
 }
 

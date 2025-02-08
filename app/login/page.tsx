@@ -1,8 +1,8 @@
 import React from "react";
-import Login from "./Login";
+import Auth from "./Auth";
 
 function page() {
-  return <Login />;
+  return <Auth />;
 }
 
 export default page;

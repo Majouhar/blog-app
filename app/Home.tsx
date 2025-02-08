@@ -24,7 +24,11 @@ const BlogsPage = () => {
       {blogs.length == 0 ? (
         <p>No blogs found.</p>
       ) : (
-        blogs.map((blog: Blog) => <p key={blog.id}>{blog.title}</p>)
+        blogs.map((blog: Blog & { author: { name: string } }) => (
+          <p key={blog.id}>
+            {blog.title},{blog.author.name}
+          </p>
+        ))
       )}
     </div>
   );

@@ -49,7 +49,7 @@ export async function createUser(user: User) {
   try {
     const exisitngUser = await getUser(user.email);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     if (!(error instanceof GlobalError)) {
       throw Error("Some Error Occured");
     }
@@ -68,5 +68,9 @@ export async function createUser(user: User) {
 
 export async function validateUserCredentials(email: string, password: string) {
   const user = await getUser(email, true);
-  return await verifyPassword(password, user?.password ?? "");
+  const isValid = await verifyPassword(password, user?.password ?? "");
+  if (!isValid) {
+    throw new GlobalError(StatusCode.UNAUTHORIZED, "Invalid Email/Password");
+  }
+  return user;
 }

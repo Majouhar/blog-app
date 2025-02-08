@@ -4,11 +4,10 @@ type Query {
 
 type Mutation {
   createUser(input: CreateUserInput!): User
-  validateUserCredentials(email: String!, password: String!): Boolean
+  validateUserCredentials(email: String!, password: String!): User
 }
 
 type User {
-  id: ID!
   name: String!
   email: String!
   blogCount: Int!

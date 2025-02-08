@@ -1,4 +1,5 @@
 import prisma from "@/prisma/client";
+import { StatusCode } from "@/utils/constants";
 import { GlobalError } from "@/utils/Exceptions";
 import { Blog } from "@prisma/client";
 
@@ -71,11 +72,13 @@ export async function updateBlog(blog: Blog) {
   if (!blog.id) {
     throw new GlobalError(StatusCode.NOT_FOUND, "Blog Not Found");
   }
+  const { id, authorEmail, createdAt, updatedAt, published, ...rest } = blog;
+  //user won't be able to unpublish once published, but can delete
   const updatedBlog = await prisma.blog.update({
     where: {
       id: blog.id,
     },
-    data: blog,
+    data: { ...rest, published: published ? true : undefined },
   });
   return updatedBlog;
 }

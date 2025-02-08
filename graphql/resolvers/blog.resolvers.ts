@@ -5,8 +5,10 @@ import {
   updateBlog,
   deleteBlog,
 } from "@/lib/blogActions";
+import { dateScalar } from "../scalar";
 
 export const resolvers = {
+  Date: dateScalar,
   Query: {
     getAllPublishedBlogs: async (_: any, { filter, page, size }: any) => {
       return await getAllPublishedBlogs(filter, page, size);
@@ -17,6 +19,7 @@ export const resolvers = {
   },
   Mutation: {
     createBlog: async (_: any, { blog }: any) => {
+      console.log(blog);
       return await createBlog(blog);
     },
     updateBlog: async (_: any, { blog }: any) => {
@@ -27,4 +30,3 @@ export const resolvers = {
     },
   },
 };
-

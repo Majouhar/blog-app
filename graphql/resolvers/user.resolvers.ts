@@ -33,8 +33,8 @@ export const resolvers = {
       _: any,
       { email, password }: { email: string; password: string }
     ) {
-      const isValid = await validateUserCredentials(email, password);
-      return isValid;
+      const user = await validateUserCredentials(email, password);
+      return user;
     },
   },
 

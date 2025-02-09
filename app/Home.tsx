@@ -5,29 +5,17 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Loader from "./components/Loader";
-
-interface Blog {
-  id: number;
-  title: string;
-  authorEmail: string;
-  createdAt: Date;
-  author: {
-    name: string;
-  };
-}
-
-interface BlogData {
-  blogs: Blog[];
-  count: number;
-}
+import { Blog } from "@prisma/client";
 
 const BlogList = () => {
   const router = useRouter();
   const session = useSession();
+
   const [currentPage, setCurrentPage] = useState(1);
   const [isDrafts, setIsDrafts] = useState(false);
 
   const itemsPerPage = 5;
+
   const { data, loading, error } = useQuery(
     isDrafts ? GET_ALL_DRAFTS : GET_ALL_BLOGS,
     {
@@ -37,11 +25,13 @@ const BlogList = () => {
       },
     }
   );
+
   useEffect(() => {
     if (session.status == "unauthenticated" && isDrafts) {
       router.push("/login");
     }
   }, [isDrafts, session]);
+
   if (loading) return <Loader />;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -80,7 +70,7 @@ const BlogList = () => {
         </div>
       </div>
       <div className="max-h-128 ">
-        {blogs.map((blog: Blog) => (
+        {blogs.map((blog: Blog & { author: { name: string } }) => (
           <div
             onClick={() => router.push(`/${blog.id}`)}
             key={blog.id}

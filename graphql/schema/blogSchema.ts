@@ -1,3 +1,4 @@
+const blogSchema = `
 scalar Date
 
 type Blog {
@@ -35,3 +36,8 @@ type PaginatedBlogs {
   blogs: [Blog]
   count: Int
 }
+
+
+
+`;
+export default blogSchema;

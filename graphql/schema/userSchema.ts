@@ -1,3 +1,4 @@
+const userSchema = `
 type Query {
   getUser(email: String!): User
 }
@@ -18,3 +19,8 @@ input CreateUserInput {
   email: String!
   password: String!
 }
+
+
+
+`;
+export default userSchema;

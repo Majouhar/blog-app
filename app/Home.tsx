@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Loader from "./components/Loader";
 import { Blog } from "@prisma/client";
+import { BlogResponse } from "@/utils/types";
 
 const BlogList = () => {
   const router = useRouter();
@@ -38,11 +39,11 @@ const BlogList = () => {
   }
 
   const blogs = isDrafts
-    ? data?.getDrafts?.blogs
-    : data?.getAllPublishedBlogs?.blogs;
+    ? data?.getDrafts.blogs
+    : data?.getAllPublishedBlogs.blogs;
 
   const totalPages = Math.ceil(
-    (isDrafts ? data?.getDrafts?.count : data?.getAllPublishedBlogs?.count) /
+    (isDrafts ? data?.getDrafts.count : data?.getAllPublishedBlogs.count) /
       itemsPerPage
   );
 
@@ -55,16 +56,20 @@ const BlogList = () => {
   return (
     <div className="max-w-4xl mx-auto mb-8 p-4 bg-white rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-3xl font-bold  text-center">Blogs</h1>
+        <h1 className="text-3xl font-bold  text-center">
+          Blogs {isDrafts ? "(Drafts)" : ""}
+        </h1>
         <div className="flex gap-2">
           <button
-            className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+            className={`${
+              isDrafts ? "bg-gray-500 hover:bg-gray-600" : "bg-indigo-500 hover:bg-indigo-600"
+            } px-4 py-2 rounded-lg  text-white `}
             onClick={() => setIsDrafts((prev) => !prev)}
           >
             {isDrafts ? "All Blogs" : "Drafts"}
           </button>
           <button
-            className="px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+            className="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600"
             onClick={() => router.push("/manage")}
           >
             Add Blog
@@ -72,7 +77,7 @@ const BlogList = () => {
         </div>
       </div>
       <div className="max-h-128 ">
-        {blogs.map((blog: Blog & { author: { name: string } }) => (
+        {blogs.map((blog: BlogResponse) => (
           <div
             onClick={() => router.push(`/${blog.id}`)}
             key={blog.id}
@@ -87,7 +92,6 @@ const BlogList = () => {
         ))}
       </div>
 
-      {/* Pagination */}
       <div className="flex justify-between items-center mt-6">
         <button
           onClick={() => handlePageChange(currentPage - 1)}

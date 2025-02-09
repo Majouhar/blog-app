@@ -2,50 +2,46 @@
 import {
   CREATE_BLOG,
   DELETE_BLOG,
-  GET_ALL_BLOGS,
   GET_BLOG,
   UPDATE_BLOG,
 } from "@/graphql/queries/blogQueries";
 import { useLazyQuery, useMutation } from "@apollo/client";
-import { Blog } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
+import Loader from "../components/Loader";
 const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
   const router = useRouter();
   const session = useSession();
 
-  // Adds messages only in a dev environment
-  loadDevMessages();
-  loadErrorMessages();
-
   const [fetchBlog, { data, loading, error }] = useLazyQuery(GET_BLOG);
-  const [addBlog, { data: addData, loading: addLoading, error: addError }] =
-    useMutation(CREATE_BLOG, {
-      onCompleted(data) {
-        const blog = data.createBlog;
-        if (!blog.published) {
-          router.push(`/${blog.id}`);
-        } else {
-          router.back();
-        }
-      },
-    });
-  const [
-    updateBlog,
-    { data: updateData, loading: updateLoading, error: updateError },
-  ] = useMutation(UPDATE_BLOG, {
+  const [addBlog, { loading: addLoading }] = useMutation(CREATE_BLOG, {
+    onCompleted(data) {
+      const blog = data.createBlog;
+      if (!blog.published) {
+        router.push(`/${blog.id}`);
+      } else {
+        router.back();
+      }
+    },
+    onError(error) {
+      throw new Error(error.message);
+    },
+  });
+  const [updateBlog, { loading: updateLoading }] = useMutation(UPDATE_BLOG, {
     onCompleted() {
       router.back();
     },
+    onError(error) {
+      throw new Error(error.message);
+    },
   });
-  const [
-    deleteBlog,
-    { data: deleteData, loading: deleteLoading, error: deleteError },
-  ] = useMutation(DELETE_BLOG, {
+  const [deleteBlog, { loading: deleteLoading }] = useMutation(DELETE_BLOG, {
     onCompleted() {
       router.push("/");
+    },
+    onError(error) {
+      throw new Error(error.message);
     },
   });
   const blog = data?.getBlog;
@@ -89,11 +85,13 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
   }, [blogId]);
 
   useEffect(() => {
-    if (isBlogAvailable) {
+    if (isBlogAvailable && sessionEmail!= blog.authorEmail) {
+      router.back();
+    } else if (isBlogAvailable) {
       setTitle(blog.title);
       setContent(blog.content);
     }
-  }, [isBlogAvailable]);
+  }, [blog, isBlogAvailable, blogId]);
 
   useEffect(() => {
     if (error && error.message == "Blog Not Found") {
@@ -101,11 +99,15 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
     }
   }, [error]);
 
+  if (loading || updateLoading || deleteLoading || addLoading) {
+    return <Loader />;
+  }
+
   return (
     <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-6">Edit Blog</h1>
 
-      {/* Blog Title */}
+   
       <div className="mb-4">
         <label
           htmlFor="title"
@@ -122,7 +124,7 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
         />
       </div>
 
-      {/* Blog Content */}
+
       <div className="mb-6">
         <label
           htmlFor="content"
@@ -139,7 +141,7 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
         />
       </div>
 
-      {/* Author Info (Read-Only) */}
+    
       {isBlogAvailable && (
         <div className="mb-4 text-gray-600">
           <p>
@@ -156,20 +158,20 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
           </p>
         </div>
       )}
-      {session.data?.user?.email &&
-        session.data.user.email == blog?.authorEmail && <></>}
-      <button
-        onClick={() => handleSave(false)}
-        className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-      >
-        {hasPermissionToModify && blog?.published
-          ? "Save Changes"
-          : "Save Draft"}
-      </button>
+      {((blogId && hasPermissionToModify) || !blogId) && (
+        <button
+          onClick={() => handleSave(false)}
+          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+        >
+          {hasPermissionToModify && blog?.published
+            ? "Save Changes"
+            : "Save Draft"}
+        </button>
+      )}
       {!blog?.published && (
         <button
           onClick={() => handleSave(true)}
-          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+          className="ml-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
         >
           Publish
         </button>
@@ -177,13 +179,12 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
       {hasPermissionToModify && (
         <button
           onClick={handleDelete}
-          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+          className="ml-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
         >
           Delete
         </button>
       )}
 
-      {/* Cancel Button */}
       <button
         onClick={() => router.back()}
         className="ml-4 px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"

@@ -52,7 +52,6 @@ export async function createUser(user: User) {
   try {
      exisitngUser = await getUser(user.email);
   } catch (error) {
-    console.log(error);
     if (!(error instanceof GlobalError)) {
       throw Error("Some Error Occured");
     }

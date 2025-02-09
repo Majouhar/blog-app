@@ -11,7 +11,17 @@ export async function getAllPublishedBlogs(
 ) {
   const [blogs, count] = await Promise.all([
     prisma.blog.findMany({
-      where: { ...filter, published: true },
+      where: {
+        title: {
+          contains: filter.title ?? "",
+          mode: "insensitive",
+        },
+        content: {
+          contains: filter.content ?? "",
+          mode: "insensitive",
+        },
+        published: true,
+      },
       select: {
         id: true,
         author: {
@@ -31,12 +41,18 @@ export async function getAllPublishedBlogs(
     }),
     prisma.blog.count({
       where: {
-        ...filter,
+        title: {
+          contains: filter.title ?? "",
+          mode: "insensitive",
+        },
+        content: {
+          contains: filter.content ?? "",
+          mode: "insensitive",
+        },
         published: true,
       },
     }),
   ]);
-
   return { blogs, count };
 }
 
@@ -44,7 +60,18 @@ export async function getDrafts(filter: Blog, page: number, size: number) {
   const sessionEmail = await getAuthUserEmail();
   const [blogs, count] = await Promise.all([
     prisma.blog.findMany({
-      where: { ...filter, published: false, authorEmail: sessionEmail },
+      where: {
+        title: {
+          contains: filter.title ?? "",
+          mode: "insensitive",
+        },
+        content: {
+          contains: filter.content ?? "",
+          mode: "insensitive",
+        },
+        published: false,
+        authorEmail: sessionEmail,
+      },
       select: {
         id: true,
         author: {
@@ -64,7 +91,14 @@ export async function getDrafts(filter: Blog, page: number, size: number) {
     }),
     prisma.blog.count({
       where: {
-        ...filter,
+        title: {
+          contains: filter.title ?? "",
+          mode: "insensitive",
+        },
+        content: {
+          contains: filter.content ?? "",
+          mode: "insensitive",
+        },
         published: false,
         authorEmail: sessionEmail,
       },

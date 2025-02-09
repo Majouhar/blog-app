@@ -3,9 +3,10 @@ import { hasAllKeys } from "@/utils/basicUtility";
 import { GlobalError } from "@/utils/Exceptions";
 import { User } from "@prisma/client";
 import { hashPassword, verifyPassword } from "./authAction";
+import { StatusCode } from "@/utils/constants";
 
 export async function getUser(email: string, isAuthorize: boolean = false) {
-  const user = prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
       email,
     },
@@ -38,7 +39,10 @@ export async function createUser(user: User) {
     throw new GlobalError(StatusCode.BAD_REQUEST, "Enter A Valid Email");
   }
   const password = user.password;
-  if (password.trim().length < 8) {
+  if (user.name.trim().length < 3) {
+    throw new GlobalError(StatusCode.BAD_REQUEST, "Enter A Valid Name");
+  }
+  if (password.length < 8) {
     throw new GlobalError(
       StatusCode.BAD_REQUEST,
       "Password Should be minimum 8 characters"
@@ -46,8 +50,9 @@ export async function createUser(user: User) {
   }
   let exisitngUser;
   try {
-    const exisitngUser = await getUser(user.email);
+     exisitngUser = await getUser(user.email);
   } catch (error) {
+    console.log(error);
     if (!(error instanceof GlobalError)) {
       throw Error("Some Error Occured");
     }
@@ -59,12 +64,16 @@ export async function createUser(user: User) {
   const hashedPassword = await hashPassword(password.trim());
   //TODO -Should catch prisma errors globally and show internal server error
   const createdUser = await prisma.user.create({
-    data: { ...user, password: hashedPassword },
+    data: { ...user, name: user.name.trim(), password: hashedPassword },
   });
   return createdUser;
 }
 
 export async function validateUserCredentials(email: string, password: string) {
   const user = await getUser(email, true);
-  return await verifyPassword(password, user?.password ?? "");
+  const isValid = await verifyPassword(password, user?.password ?? "");
+  if (!isValid) {
+    throw new GlobalError(StatusCode.UNAUTHORIZED, "Invalid Email/Password");
+  }
+  return user;
 }

@@ -39,22 +39,22 @@ function UserDetails() {
         <div
           ref={divRef}
           onClick={() => setIsDropdown((prev) => !prev)}
-          className="rounded-full cursor-pointer mb-4 w-14 h-14 font-bold text-white bg-gray-800 flex items-center justify-center"
+          className="rounded-full cursor-pointer mb-4 w-10 h-10 md:w-14 md:h-14 font-bold text-white bg-gray-800 flex items-center justify-center"
         >
-          <p>{user.data.user?.name?.slice(0, 2)}</p>
+          <p className="text-sm md:text-lg">{user.data.user?.name?.slice(0, 2)}</p>
           {isDropdown && (
             <div
               onClick={handleSignOut}
               className="absolute bottom-0 text-black rounded px-2 py-1 shadow-[0_4px_6px_rgba(0,0,0,0.8)] "
             >
-              <p>Logout</p>
+              <p className="text-sm md:text-lg">Logout</p>
             </div>
           )}
         </div>
       ) : pathName != "/login" ? (
         <p
           onClick={() => router.push("/login")}
-          className="bg-gray-800 text-white rounded px-3 py-1 cursor-pointer"
+          className="bg-gray-800 text-white rounded px-3  py-1 text-xs md:text-lg cursor-pointer"
         >
           LOGIN
         </p>

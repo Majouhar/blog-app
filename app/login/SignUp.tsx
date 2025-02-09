@@ -4,6 +4,7 @@ import { ADD_USER } from "@/graphql/queries/userQueries";
 import { useMutation } from "@apollo/client";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
+import Button from "../components/Button";
 
 const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
   const [name, setName] = useState("");
@@ -42,8 +43,8 @@ const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
 
   return (
     <>
-      <div className="max-w-lg mx-auto my-12 p-6 rounded-2xl shadow-lg bg-white sm:my-8 sm:p-4 md:my-10 md:p-5">
-        <h1 className="text-2xl font-bold text-center mb-6 sm:text-xl md:text-2xl">
+      <div className="max-w-lg mx-auto   rounded-2xl shadow-lg bg-white  sm:p-4  md:p-5">
+        <h1 className="text-lg md:text-2xl font-bold text-center  sm:text-xl md:text-2xl mb-4">
           Sign Up
         </h1>
 
@@ -86,14 +87,13 @@ const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
           onChange={setCnfPassword}
         />
 
-        <button
+        <Button
           onClick={handleSignUp}
-          className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg font-bold hover:bg-blue-600 transition sm:py-2 md:py-3"
-        >
-          Sign Up
-        </button>
+          className="w-full bg-blue-500 text-white py-3 rounded-lg  font-bold hover:bg-blue-600 transition sm:py-2 md:py-3"
+          label="  Sign Up"
+        />
 
-        <p className="mt-6 text-center text-sm text-gray-600">
+        <p className="mt-6 text-center text-xs md:text-sm text-gray-600">
           Already have an account?{" "}
           <span
             onClick={toggleLogin}

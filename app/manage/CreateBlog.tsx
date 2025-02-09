@@ -10,6 +10,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
+import Button from "../components/Button";
 const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
   const router = useRouter();
   const session = useSession();
@@ -82,7 +83,7 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
     if (blogId) {
       fetchBlog({ variables: { blogId: Number(blogId) } });
     }
-  }, [blogId,fetchBlog]);
+  }, [blogId, fetchBlog]);
 
   useEffect(() => {
     if (isBlogAvailable && sessionEmail != blog.authorEmail) {
@@ -91,26 +92,26 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
       setTitle(blog.title);
       setContent(blog.content);
     }
-  }, [blog, isBlogAvailable, blogId,router,sessionEmail,]);
+  }, [blog, isBlogAvailable, blogId, router, sessionEmail]);
 
   useEffect(() => {
     if (error && error.message == "Blog Not Found") {
       router.push("/manage");
     }
-  }, [error,router]);
+  }, [error, router]);
 
   if (loading || updateLoading || deleteLoading || addLoading) {
     return <Loader />;
   }
 
   return (
-    <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-      <h1 className="text-2xl font-bold mb-6">Edit Blog</h1>
+    <div className="max-w-4xl mx-auto  p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-lg md:text-3xl font-bold mb-6 ">Edit Blog</h1>
 
       <div className="mb-4">
         <label
           htmlFor="title"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-xs md:text-sm font-medium text-gray-700 mb-1"
         >
           Title
         </label>
@@ -119,14 +120,14 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full text-xs md:text-sm px-2 py-1 md:px-4 md:py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div className="mb-6">
         <label
           htmlFor="content"
-          className="block text-sm font-medium text-gray-700 mb-1"
+          className="block text-xs md:text-sm font-medium text-gray-700 mb-1"
         >
           Content
         </label>
@@ -135,7 +136,7 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
           rows={6}
           value={content}
           onChange={(e) => setContent(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full px-2 text-xs md:text-sm py-1 md:px-4 md:py-2  border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
@@ -156,38 +157,35 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
         </div>
       )}
       {((blogId && hasPermissionToModify) || !blogId) && (
-        <button
+        <Button
+          className=" bg-green-500 text-white  hover:bg-green-600 "
           onClick={() => handleSave(false)}
-          className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
-        >
-          {hasPermissionToModify && blog?.published
-            ? "Save Changes"
-            : "Save Draft"}
-        </button>
+          label={
+            hasPermissionToModify && blog?.published
+              ? "Save Changes"
+              : "Save Draft"
+          }
+        />
       )}
       {!blog?.published && (
-        <button
+        <Button
+          className="ml-4  bg-blue-500 text-white  hover:bg-blue-600 "
           onClick={() => handleSave(true)}
-          className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-        >
-          Publish
-        </button>
+          label={"Publish"}
+        />
       )}
       {hasPermissionToModify && (
-        <button
+        <Button
+          className="ml-4 bg-red-500 text-white hover:bg-red-600 "
           onClick={handleDelete}
-          className="ml-4 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
-        >
-          Delete
-        </button>
+          label={"Delete"}
+        />
       )}
-
-      <button
+      <Button
+        className="ml-4  bg-gray-500 text-white  hover:bg-gray-600 "
         onClick={() => router.back()}
-        className="ml-4 px-6 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition"
-      >
-        Cancel
-      </button>
+        label={"Cancel"}
+      />
     </div>
   );
 };

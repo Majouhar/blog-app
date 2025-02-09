@@ -52,7 +52,7 @@ const BlogList = () => {
   return (
     <div className="max-w-4xl mx-auto  p-4 bg-white rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-0 md:mb-6">
-        <h1 className="text-xl md:text-3xl font-bold  text-center">
+        <h1 className="text-lg md:text-3xl font-bold  ">
           Blogs {isDrafts ? "(Drafts)" : ""}
         </h1>
         <div className="flex gap-2">

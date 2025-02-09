@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import FormInput from "../components/FormInput";
+import Button from "../components/Button";
 
 function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
   const router = useRouter();
@@ -14,7 +15,7 @@ function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
   const handleSubmit = async () => {
     if (email.trim().length < 2 || password.trim().length < 8) {
       toast.error("Enter Valid Email/Password");
-      return
+      return;
     }
     setLoading(true);
     const result = await signIn("credentials", {
@@ -35,7 +36,7 @@ function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
   if (loading) return <Loader />;
   return (
     <div className="max-w-md mx-auto my-12 p-6 rounded-lg shadow-lg bg-white sm:max-w-sm md:max-w-lg lg:max-w-xl">
-      <h1 className="text-2xl font-bold text-center mb-6 lg:text-3xl">
+      <h1 className="text-lg md:text-2xl  font-bold text-center mb-6 lg:text-3xl">
         Sign In
       </h1>
 
@@ -58,14 +59,12 @@ function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
         onChange={setPassword}
       />
 
-      <button
+      <Button
         onClick={handleSubmit}
         className="w-full py-2 text-white font-bold rounded-md sm:py-3 sm:text-base lg:py-3 lg:text-lg bg-blue-500 hover:bg-blue-700"
-      >
-        Sign In
-      </button>
-
-      <p className="mt-4 text-center text-sm text-gray-600 lg:text-base">
+        label="  Sign In"
+      />
+      <p className="mt-4 text-center text-xs md:text-sm text-gray-600 lg:text-base">
         Don&apos;t have an account?{" "}
         <span
           onClick={toggleLogin}

@@ -171,7 +171,7 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
       {!blog?.published && (
         <button
           onClick={() => handleSave(true)}
-          className="ml-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+          className="ml-4 px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
         >
           Publish
         </button>
@@ -179,7 +179,7 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
       {hasPermissionToModify && (
         <button
           onClick={handleDelete}
-          className="ml-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+          className="ml-4 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
         >
           Delete
         </button>

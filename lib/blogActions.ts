@@ -26,7 +26,7 @@ export async function getAllPublishedBlogs(
       orderBy: {
         createdAt: "desc",
       },
-      skip: page*size,
+      skip: page * size,
       take: size,
     }),
     prisma.blog.count({
@@ -60,7 +60,7 @@ export async function getDrafts(filter: Blog, page: number, size: number) {
       orderBy: {
         createdAt: "desc",
       },
-      skip: page*size,
+      skip: page * size,
       take: size,
     }),
     prisma.blog.count({
@@ -129,6 +129,7 @@ export async function updateBlog(blog: Blog) {
   if (!blog.id) {
     throw new GlobalError(StatusCode.NOT_FOUND, "Blog Not Found");
   }
+  // eslint-disable-next-line
   const { id, authorEmail, createdAt, updatedAt, published, ...rest } = blog;
   //user won't be able to unpublish once published, but can delete
   const updatedBlog = await prisma.blog.update({
@@ -161,5 +162,5 @@ export async function deleteBlog(blogId: number) {
       id: blogId,
     },
   });
-  return !!deleteBlog;
+  return !!deletedBlog;
 }

@@ -1,5 +1,4 @@
 "use client";
-import { Chip } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";

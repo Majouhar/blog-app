@@ -10,7 +10,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import Loader from "../components/Loader";
-const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
+const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
   const router = useRouter();
   const session = useSession();
 
@@ -82,22 +82,22 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
     if (blogId) {
       fetchBlog({ variables: { blogId: Number(blogId) } });
     }
-  }, [blogId]);
+  }, [blogId,fetchBlog]);
 
   useEffect(() => {
-    if (isBlogAvailable && sessionEmail!= blog.authorEmail) {
+    if (isBlogAvailable && sessionEmail != blog.authorEmail) {
       router.back();
     } else if (isBlogAvailable) {
       setTitle(blog.title);
       setContent(blog.content);
     }
-  }, [blog, isBlogAvailable, blogId]);
+  }, [blog, isBlogAvailable, blogId,router,sessionEmail,]);
 
   useEffect(() => {
     if (error && error.message == "Blog Not Found") {
       router.push("/manage");
     }
-  }, [error]);
+  }, [error,router]);
 
   if (loading || updateLoading || deleteLoading || addLoading) {
     return <Loader />;
@@ -107,7 +107,6 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
     <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
       <h1 className="text-2xl font-bold mb-6">Edit Blog</h1>
 
-   
       <div className="mb-4">
         <label
           htmlFor="title"
@@ -123,7 +122,6 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
           className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
-
 
       <div className="mb-6">
         <label
@@ -141,7 +139,6 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
         />
       </div>
 
-    
       {isBlogAvailable && (
         <div className="mb-4 text-gray-600">
           <p>

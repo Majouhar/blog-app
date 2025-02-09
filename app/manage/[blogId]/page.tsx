@@ -1,10 +1,9 @@
 import React from "react";
 import EditBlogPage from "../CreateBlog";
 
-async function page({ params }: Readonly<{ params: { blogId: number } }>) {
-  //Next js throwing unwanted warning for not using await
-  const blogId = await params
-  return <EditBlogPage blogId={blogId.blogId} />;
+async function page({ params }: Readonly<{ params: Promise<{ blogId: string }> }>) {
+  const blogId = (await params).blogId
+  return <EditBlogPage blogId={blogId} />;
 }
 
 export default page;

@@ -1,12 +1,12 @@
 import { validateUserCredentials } from "@/lib/userActions";
-import NextAuth, { User } from "next-auth";
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 const authOptions = {
   providers: [
     CredentialsProvider({
-      //@ts-expect-error
-      async authorize(credentials, _req) {
+      //@ts-expect-error expected-error
+      async authorize(credentials) {
         const user: { name: string; email: string } =
           await validateUserCredentials(
             credentials?.email ?? "",

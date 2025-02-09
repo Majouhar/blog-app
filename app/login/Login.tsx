@@ -66,7 +66,7 @@ function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
       </button>
 
       <p className="mt-4 text-center text-sm text-gray-600 lg:text-base">
-        Don't have an account?{" "}
+        Don&apos;t have an account?{" "}
         <span
           onClick={toggleLogin}
           className="text-blue-500 cursor-pointer hover:underline"

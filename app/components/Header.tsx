@@ -4,7 +4,6 @@ import React from "react";
 import Logo from "@/images/Logo.png";
 import UserDetails from "./UserDetails";
 import { useRouter } from "next/navigation";
-import { useMediaQuery } from "react-responsive";
 import useResponsive from "../hooks/useResponsive";
 
 function Header() {

@@ -12,7 +12,7 @@ const SingleBlogPage: React.FC<{ blogId: string }> = ({ blogId }) => {
   const session = useSession();
   const router = useRouter();
 
-  const { data, loading, error } = useQuery(GET_BLOG, {
+  const { data, loading } = useQuery(GET_BLOG, {
     variables: {
       blogId: isNaN(Number(blogId)) ? -1 : Number(blogId),
     },

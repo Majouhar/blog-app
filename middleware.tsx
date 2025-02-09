@@ -2,7 +2,6 @@ import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 import withAuth from "next-auth/middleware";
 
-const NOT_CREATE = /^(?!\/create$).*/;
 export default async function middleware(
   req: NextRequest,
   event: NextFetchEvent
@@ -12,7 +11,10 @@ export default async function middleware(
 
   const isAuthenticated = !!token;
 
-  if (NOT_CREATE.test(pathname) || isAuthenticated) {
+  if (
+    !pathname.includes("manage") ||
+    isAuthenticated
+  ) {
     return NextResponse.next();
   }
   const authMiddleware = withAuth({

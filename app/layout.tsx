@@ -19,12 +19,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="px-5">
+      <body className=" relative h-screen flex flex-col">
         <NextAuthWrapper>
           <AppoloWrapper>
             <ToastProvider>
               <Header />
-              {children}
+              <div className="flex-1 overflow-auto">{children}</div>
               <Footer />
             </ToastProvider>
           </AppoloWrapper>

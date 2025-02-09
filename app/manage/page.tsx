@@ -1,10 +1,9 @@
 import React from 'react'
+import EditBlogPage from './CreateBlog'
 
 function page() {
   return (
-    <div>
-      
-    </div>
+    <EditBlogPage/>
   )
 }
 

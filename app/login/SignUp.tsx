@@ -2,8 +2,10 @@ import React from "react";
 
 const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
   return (
-    <div className="max-w-lg mx-auto my-12 p-6 rounded-2xl shadow-lg bg-white">
-      <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
+    <div className="max-w-lg mx-auto my-12 p-6 rounded-2xl shadow-lg bg-white sm:my-8 sm:p-4 md:my-10 md:p-5">
+      <h1 className="text-2xl font-bold text-center mb-6 sm:text-xl md:text-2xl">
+        Sign Up
+      </h1>
 
       {/* Name Input */}
       <div className="mb-4">
@@ -17,7 +19,7 @@ const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
           id="name"
           type="text"
           placeholder="Enter your full name"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
         />
       </div>
 
@@ -33,7 +35,7 @@ const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
           id="email"
           type="email"
           placeholder="Enter your email"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
         />
       </div>
 
@@ -49,7 +51,7 @@ const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
           id="password"
           type="password"
           placeholder="Enter your password"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
         />
       </div>
 
@@ -65,12 +67,12 @@ const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
           id="confirm-password"
           type="password"
           placeholder="Confirm your password"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
         />
       </div>
 
       {/* Sign Up Button */}
-      <button className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg font-bold hover:bg-blue-600 transition">
+      <button className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg font-bold hover:bg-blue-600 transition sm:py-2 md:py-3">
         Sign Up
       </button>
 

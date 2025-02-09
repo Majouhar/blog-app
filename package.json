@@ -39,6 +39,6 @@
     "typescript": "^5"
   },
   "files": [
-    "*.graphql"
+    "**/*.graphql"
   ]
 }

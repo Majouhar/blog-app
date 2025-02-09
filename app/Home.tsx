@@ -3,7 +3,7 @@ import { GET_ALL_BLOGS, GET_ALL_DRAFTS } from "@/graphql/queries/blogQueries";
 import { useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useRef, useState } from "react";
+import React, {  useState } from "react";
 import Loader from "./components/Loader";
 import { BlogResponse } from "@/utils/types";
 import Button from "./components/Button";

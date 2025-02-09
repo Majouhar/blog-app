@@ -142,16 +142,16 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: string }>) => {
 
       {isBlogAvailable && (
         <div className="mb-4 text-gray-600">
-          <p>
-            <span className="font-medium">Author:</span> {blog.author.name} (
+          <p className="text-sm md:text-lg">
+            <span >Author:</span> {blog.author.name} (
             {blog.authorEmail})
           </p>
-          <p>
-            <span className="font-medium">Created At:</span>{" "}
+          <p className="text-sm md:text-lg">
+            <span >Created At:</span>{" "}
             {new Date(blog.createdAt).toLocaleDateString()}
           </p>
-          <p>
-            <span className="font-medium">Last Updated At:</span>{" "}
+          <p className="text-sm md:text-lg">
+            <span >Last Updated At:</span>{" "}
             {new Date(blog.updatedAt).toLocaleDateString()}
           </p>
         </div>

@@ -26,6 +26,7 @@ const BlogList = () => {
         page: currentPage - 1,
         size: itemsPerPage,
       },
+      fetchPolicy: "no-cache",
     }
   );
 

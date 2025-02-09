@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import Loader from "../components/Loader";
 import { toast } from "react-toastify";
+import Button from "../components/Button";
 
 const SingleBlogPage: React.FC<{ blogId: string }> = ({ blogId }) => {
   const session = useSession();
@@ -24,26 +25,25 @@ const SingleBlogPage: React.FC<{ blogId: string }> = ({ blogId }) => {
   const blog = data?.getBlog;
   if (blog)
     return (
-      <div className="max-w-4xl mx-auto my-8 p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold mb-4">{blog.title}</h1>
+      <div className="max-w-4xl mx-auto  p-6 bg-white rounded-lg shadow-lg">
+        <h1 className="text-xl md:text-3xl font-bold mb-4">{blog.title}</h1>
         <div className="mb-4 text-gray-600">
-          <p>
-            <span className="font-medium">Author:</span> {blog.author.name} (
-            {blog.authorEmail})
+          <p className="text-sm md:text-lg">
+            <span>Author:</span> {blog.author.name} ({blog.authorEmail})
           </p>
-          <p>
-            <span className="font-medium">Created on:</span>{" "}
+          <p className="text-sm md:text-lg">
+            <span>Created on:</span>{" "}
             {new Date(blog.createdAt).toLocaleDateString()}
           </p>
-          <p>
-            <span className="font-medium">Updated on:</span>{" "}
+          <p className="text-sm md:text-lg">
+            <span>Updated on:</span>{" "}
             {new Date(blog.updatedAt).toLocaleDateString()}
           </p>
         </div>
 
         <div className="mt-6">
-          <h2 className="text-2xl font-semibold mb-4">Content</h2>
-          <p className="text-gray-700 text-lg leading-relaxed">
+          <h2 className="text-lg md:text-2xl font-semibold mb-4">Content</h2>
+          <p className="text-gray-700 text-xs md:text-lg leading-relaxed">
             {blog.content}
           </p>
         </div>
@@ -51,19 +51,17 @@ const SingleBlogPage: React.FC<{ blogId: string }> = ({ blogId }) => {
         <div className="mt-6 flex gap-2">
           {session.status == "authenticated" &&
             session.data.user?.email == blog.authorEmail && (
-              <button
+              <Button
                 onClick={() => router.push(`/manage/${blog.id}`)}
-                className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-              >
-                Edit
-              </button>
+                className=" bg-blue-500 text-white  hover:bg-blue-600 "
+                label="Edit"
+              />
             )}
-          <button
+          <Button
             onClick={() => router.replace("/")}
-            className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-          >
-            Go Back
-          </button>
+            className="bg-blue-500 text-white  hover:bg-blue-600 "
+            label="Go Back"
+          />
         </div>
       </div>
     );

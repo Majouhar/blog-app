@@ -16,7 +16,11 @@ export default function Error({
 
   return (
     <div className="flex flex-col gap-4 items-center justify-center">
-      <h2 className="font-bold">{error.message}</h2>
+      <h2 className="font-bold">
+        {process.env.NODE_ENV == "development"
+          ? error.message
+          : "Some Error Occured"}
+      </h2>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
@@ -32,7 +36,9 @@ export default function Error({
         />
       </svg>
 
-      <button className="" onClick={() => reset()}>Sorry For the inconvenience, Please try again</button>
+      <button className="" onClick={() => reset()}>
+        Sorry For the inconvenience, Please try again
+      </button>
     </div>
   );
 }

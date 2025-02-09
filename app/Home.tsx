@@ -33,7 +33,9 @@ const BlogList = () => {
   }, [isDrafts, session]);
 
   if (loading) return <Loader />;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) {
+    throw new Error(error.message);
+  }
 
   const blogs = isDrafts
     ? data?.getDrafts?.blogs

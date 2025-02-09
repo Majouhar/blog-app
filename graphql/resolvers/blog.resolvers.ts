@@ -23,7 +23,7 @@ export const blogResolvers = {
   },
   Mutation: {
     createBlog: async (_: any, { blog }: any) => {
-      console.log(blog);
+   
       return await createBlog(blog);
     },
     updateBlog: async (_: any, { blog }: any) => {

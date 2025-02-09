@@ -3,9 +3,10 @@ import { useRouter } from "next/navigation";
 import router from "next/router";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import Loader from "../components/Loader";
 
 function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
-  const router = useRouter()
+  const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -21,13 +22,13 @@ function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
     if (result && !result.error) {
       toast.success("Authenticated");
       const callbackUrl = new URLSearchParams((result.url ?? "").split("?")[1]);
-      console.log(callbackUrl.get("callbackUrl"))
+
       router.replace(callbackUrl.get("callbackUrl") ?? "/");
     } else if (result?.error) {
       toast.error(result?.error ?? "");
     }
   };
-
+  if (loading) return <Loader />;
   return (
     <div className="max-w-md mx-auto my-12 p-6 rounded-lg shadow-lg bg-white sm:max-w-sm md:max-w-lg lg:max-w-xl">
       <h1 className="text-2xl font-bold text-center mb-6 lg:text-3xl">

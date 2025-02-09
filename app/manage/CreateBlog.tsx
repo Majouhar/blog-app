@@ -24,7 +24,6 @@ const EditBlogPage = ({ blogId }: Readonly<{ blogId?: number }>) => {
   const [addBlog, { data: addData, loading: addLoading, error: addError }] =
     useMutation(CREATE_BLOG, {
       onCompleted(data) {
-        console.log(data)
         const blog = data.createBlog;
         if (!blog.published) {
           router.push(`/${blog.id}`);

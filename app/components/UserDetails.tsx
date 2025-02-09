@@ -1,13 +1,14 @@
 "use client";
 import { Chip } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import Loader from "./Loader";
 
 function UserDetails() {
   const user = useSession();
   const router = useRouter();
+  const pathName = usePathname();
 
   const [isDropdown, setIsDropdown] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -51,13 +52,15 @@ function UserDetails() {
             </div>
           )}
         </div>
-      ) : (
+      ) : pathName != "/login" ? (
         <p
           onClick={() => router.push("/login")}
           className="bg-gray-800 text-white rounded px-3 py-1 cursor-pointer"
         >
           LOGIN
         </p>
+      ) : (
+        <></>
       )}
     </div>
   );

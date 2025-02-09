@@ -1,82 +1,98 @@
-import React from "react";
+import React, { useState } from "react";
+import FormInput from "../components/FormInput";
+import { ADD_USER } from "@/graphql/queries/userQueries";
+import { useMutation } from "@apollo/client";
+import router from "next/router";
+import { toast } from "react-toastify";
 
 const SignUp = ({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) => {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [cnfPassword, setCnfPassword] = useState("");
+
+  const [addUser, { data: addData, loading: addLoading, error: addError }] =
+    useMutation(ADD_USER, {
+      onCompleted() {
+        toggleLogin();
+      },
+      onError(error) {
+        toast.error(error.message)
+      },
+    });
+  const handleSignUp = () => {
+    // Allowing spaces in passwords
+    if (name.trim().length < 3) {
+      toast.error("Enter a Valid Name");
+    } else if (password.length < 8) {
+      toast.error("Password should be minimum 8 characters");
+    } else if (password != cnfPassword) {
+      toast.error("Passwords are not matching");
+    } else {
+      addUser({
+        variables: {
+          user: {
+            name,
+            email,
+            password,
+          },
+        },
+      });
+    }
+  };
+
   return (
     <div className="max-w-lg mx-auto my-12 p-6 rounded-2xl shadow-lg bg-white sm:my-8 sm:p-4 md:my-10 md:p-5">
       <h1 className="text-2xl font-bold text-center mb-6 sm:text-xl md:text-2xl">
         Sign Up
       </h1>
 
-      {/* Name Input */}
-      <div className="mb-4">
-        <label
-          htmlFor="name"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Full Name
-        </label>
-        <input
-          id="name"
-          type="text"
-          placeholder="Enter your full name"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
-        />
-      </div>
+      <FormInput
+        label="Full Name"
+        id="name"
+        type="text"
+        placeholder="Enter your full name"
+        className="mb-4"
+        onChange={setName}
+        value={name}
+      />
+      <FormInput
+        label="Email"
+        id="email"
+        type="email"
+        placeholder="Enter your email"
+        className="mb-4"
+        onChange={setEmail}
+        value={email}
+      />
 
-      {/* Email Input */}
-      <div className="mb-4">
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          placeholder="Enter your email"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
-        />
-      </div>
+      <FormInput
+        className="mb-4"
+        id="password"
+        type="password"
+        label="Password"
+        placeholder="Enter your password"
+        value={password}
+        onChange={setPassword}
+      />
 
-      {/* Password Input */}
-      <div className="mb-4">
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter your password"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
-        />
-      </div>
+      <FormInput
+        className="mb-6"
+        id="confirm-password"
+        type="password"
+        placeholder="Confirm your password"
+        value={cnfPassword}
+        label="Confirm Password"
+        onChange={setCnfPassword}
+      />
 
-      {/* Confirm Password Input */}
-      <div className="mb-6">
-        <label
-          htmlFor="confirm-password"
-          className="block text-sm font-medium text-gray-700"
-        >
-          Confirm Password
-        </label>
-        <input
-          id="confirm-password"
-          type="password"
-          placeholder="Confirm your password"
-          className="w-full mt-1 p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 sm:p-2 md:p-3"
-        />
-      </div>
-
-      {/* Sign Up Button */}
-      <button className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg font-bold hover:bg-blue-600 transition sm:py-2 md:py-3">
+      <button
+        onClick={handleSignUp}
+        className="w-full bg-blue-500 text-white py-3 rounded-lg text-lg font-bold hover:bg-blue-600 transition sm:py-2 md:py-3"
+      >
         Sign Up
       </button>
 
-      {/* Footer Text */}
       <p className="mt-6 text-center text-sm text-gray-600">
         Already have an account?{" "}
         <span

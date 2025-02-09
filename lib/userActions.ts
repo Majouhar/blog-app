@@ -39,7 +39,10 @@ export async function createUser(user: User) {
     throw new GlobalError(StatusCode.BAD_REQUEST, "Enter A Valid Email");
   }
   const password = user.password;
-  if (password.trim().length < 8) {
+  if (user.name.trim().length < 3) {
+    throw new GlobalError(StatusCode.BAD_REQUEST, "Enter A Valid Name");
+  }
+  if (password.length < 8) {
     throw new GlobalError(
       StatusCode.BAD_REQUEST,
       "Password Should be minimum 8 characters"
@@ -47,7 +50,7 @@ export async function createUser(user: User) {
   }
   let exisitngUser;
   try {
-    const exisitngUser = await getUser(user.email);
+     exisitngUser = await getUser(user.email);
   } catch (error) {
     console.log(error);
     if (!(error instanceof GlobalError)) {
@@ -61,7 +64,7 @@ export async function createUser(user: User) {
   const hashedPassword = await hashPassword(password.trim());
   //TODO -Should catch prisma errors globally and show internal server error
   const createdUser = await prisma.user.create({
-    data: { ...user, password: hashedPassword },
+    data: { ...user, name: user.name.trim(), password: hashedPassword },
   });
   return createdUser;
 }

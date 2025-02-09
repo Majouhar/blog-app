@@ -1,9 +1,9 @@
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import router from "next/router";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
+import FormInput from "../components/FormInput";
 
 function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
   const router = useRouter();
@@ -12,6 +12,10 @@ function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
   const [password, setPassword] = useState("");
 
   const handleSubmit = async () => {
+    if (email.trim().length < 2 || password.trim().length < 8) {
+      toast.error("Enter Valid Email/Password");
+      return
+    }
     setLoading(true);
     const result = await signIn("credentials", {
       redirect: false,
@@ -35,56 +39,32 @@ function Login({ toggleLogin }: Readonly<{ toggleLogin: () => void }>) {
         Sign In
       </h1>
 
-      {/* Email Input */}
-      <div className="mb-4">
-        <label
-          htmlFor="email"
-          className="block text-sm font-medium text-gray-700 mb-1 lg:text-base"
-        >
-          Email
-        </label>
-        <input
-          id="email"
-          type="email"
-          placeholder="Enter your email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base lg:py-3"
-        />
-      </div>
+      <FormInput
+        className="mb-4"
+        id="email"
+        type="email"
+        placeholder="Enter your email"
+        value={email}
+        label="Email"
+        onChange={setEmail}
+      />
+      <FormInput
+        className="mb-6"
+        id="password"
+        type="password"
+        label="Password"
+        placeholder="Enter your password"
+        value={password}
+        onChange={setPassword}
+      />
 
-      {/* Password Input */}
-      <div className="mb-6">
-        <label
-          htmlFor="password"
-          className="block text-sm font-medium text-gray-700 mb-1 lg:text-base"
-        >
-          Password
-        </label>
-        <input
-          id="password"
-          type="password"
-          placeholder="Enter your password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base lg:py-3"
-        />
-      </div>
-
-      {/* Sign In Button */}
       <button
         onClick={handleSubmit}
-        disabled={loading}
-        className={`w-full py-2 text-white font-bold rounded-md sm:py-3 sm:text-base lg:py-3 lg:text-lg ${
-          loading
-            ? "bg-gray-400 cursor-not-allowed"
-            : "bg-blue-500 hover:bg-blue-700"
-        }`}
+        className="w-full py-2 text-white font-bold rounded-md sm:py-3 sm:text-base lg:py-3 lg:text-lg bg-blue-500 hover:bg-blue-700"
       >
-        {loading ? "Signing In..." : "Sign In"}
+        Sign In
       </button>
 
-      {/* Footer Text */}
       <p className="mt-4 text-center text-sm text-gray-600 lg:text-base">
         Don't have an account?{" "}
         <span

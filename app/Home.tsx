@@ -27,12 +27,6 @@ const BlogList = () => {
     }
   );
 
-  useEffect(() => {
-    if (session.status == "unauthenticated" && isDrafts) {
-      router.push("/login");
-    }
-  }, [isDrafts, session]);
-
   if (loading) return <Loader />;
   if (error) {
     throw new Error(error.message);
@@ -60,14 +54,18 @@ const BlogList = () => {
           Blogs {isDrafts ? "(Drafts)" : ""}
         </h1>
         <div className="flex gap-2">
-          <button
-            className={`${
-              isDrafts ? "bg-gray-500 hover:bg-gray-600" : "bg-indigo-500 hover:bg-indigo-600"
-            } px-4 py-2 rounded-lg  text-white `}
-            onClick={() => setIsDrafts((prev) => !prev)}
-          >
-            {isDrafts ? "All Blogs" : "Drafts"}
-          </button>
+          {session.status == "authenticated" && (
+            <button
+              className={`${
+                isDrafts
+                  ? "bg-gray-500 hover:bg-gray-600"
+                  : "bg-indigo-500 hover:bg-indigo-600"
+              } px-4 py-2 rounded-lg  text-white `}
+              onClick={() => setIsDrafts((prev) => !prev)}
+            >
+              {isDrafts ? "All Blogs" : "Drafts"}
+            </button>
+          )}
           <button
             className="px-4 py-2 rounded-lg bg-green-500 text-white hover:bg-green-600"
             onClick={() => router.push("/manage")}

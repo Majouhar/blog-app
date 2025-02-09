@@ -3,6 +3,7 @@ import { Chip } from "@mui/material";
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
+import Loader from "./Loader";
 
 function UserDetails() {
   const user = useSession();
@@ -29,6 +30,9 @@ function UserDetails() {
     };
   }, []);
 
+  if (isLoading) {
+    return <Loader />;
+  }
   return (
     <div className="relative flex justify-center items-center">
       {user.status == "authenticated" ? (
@@ -48,7 +52,10 @@ function UserDetails() {
           )}
         </div>
       ) : (
-        <p onClick={()=>router.push("/login")} className="bg-gray-800 text-white rounded px-3 py-1 cursor-pointer">
+        <p
+          onClick={() => router.push("/login")}
+          className="bg-gray-800 text-white rounded px-3 py-1 cursor-pointer"
+        >
           LOGIN
         </p>
       )}

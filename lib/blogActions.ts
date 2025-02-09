@@ -2,7 +2,7 @@ import prisma from "@/prisma/client";
 import { StatusCode } from "@/utils/constants";
 import { GlobalError } from "@/utils/Exceptions";
 import { Blog } from "@prisma/client";
-import { getServerSession } from "next-auth";
+import { getAuthUserEmail } from "./authAction";
 
 export async function getAllPublishedBlogs(
   filter: Blog,
@@ -41,8 +41,7 @@ export async function getAllPublishedBlogs(
 }
 
 export async function getDrafts(filter: Blog, page: number, size: number) {
-  const session = await getServerSession();
-  const sessionEmail = session?.user?.email ?? "";
+  const sessionEmail = await getAuthUserEmail();
   const [blogs, count] = await Promise.all([
     prisma.blog.findMany({
       where: { ...filter, published: false, authorEmail: sessionEmail },
@@ -76,8 +75,7 @@ export async function getDrafts(filter: Blog, page: number, size: number) {
 }
 
 export async function getBlog(blogId: number) {
-  const session = await getServerSession();
-  const sessionEmail = session?.user?.email ?? "";
+  const sessionEmail = await getAuthUserEmail();
   const blog = await prisma.blog.findUnique({
     where: { id: blogId },
     select: {
@@ -102,8 +100,8 @@ export async function getBlog(blogId: number) {
   return blog;
 }
 export async function createBlog(blog: Blog) {
-  const session = await getServerSession();
-  blog.authorEmail = session?.user?.email ?? "";
+  const authEmail = await getAuthUserEmail();
+  blog.authorEmail = authEmail;
   const createdBlog = await prisma.blog.create({
     data: blog,
     select: {
@@ -125,16 +123,17 @@ export async function createBlog(blog: Blog) {
 }
 
 export async function updateBlog(blog: Blog) {
-  // TODO(After auth check is this his own blog)
   if (!blog.id) {
     throw new GlobalError(StatusCode.NOT_FOUND, "Blog Not Found");
   }
+  const authEmail = await getAuthUserEmail();
   // eslint-disable-next-line
   const { id, authorEmail, createdAt, updatedAt, published, ...rest } = blog;
   //user won't be able to unpublish once published, but can delete
   const updatedBlog = await prisma.blog.update({
     where: {
       id: blog.id,
+      authorEmail: authEmail,
     },
     data: { ...rest, published: published ? true : undefined },
     select: {
@@ -156,10 +155,12 @@ export async function updateBlog(blog: Blog) {
 }
 
 export async function deleteBlog(blogId: number) {
+  const authEmail = await getAuthUserEmail();
   // TODO(After auth check is this his own blog)
   const deletedBlog = await prisma.blog.delete({
     where: {
       id: blogId,
+      authorEmail: authEmail,
     },
   });
   return !!deletedBlog;

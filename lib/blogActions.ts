@@ -75,7 +75,7 @@ export async function getDrafts(filter: Blog, page: number, size: number) {
 }
 
 export async function getBlog(blogId: number) {
-  const sessionEmail = await getAuthUserEmail();
+  const sessionEmail = await getAuthUserEmail(true);
   const blog = await prisma.blog.findUnique({
     where: { id: blogId },
     select: {

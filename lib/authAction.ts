@@ -10,10 +10,12 @@ export async function hashPassword(password: string) {
 export async function verifyPassword(password: string, hashedPassword: string) {
   return await compare(password, hashedPassword);
 }
-export async function getAuthUserEmail() {
+export async function getAuthUserEmail(isByPassError: boolean = false) {
   const session = await getServerSession();
   if (session?.user?.email) {
     return session.user.email;
+  } else if (isByPassError) {
+    return "";
   } else {
     throw new GlobalError(
       StatusCode.UNAUTHORIZED,

@@ -74,49 +74,57 @@ const BlogList = () => {
           </button>
         </div>
       </div>
-      <div className="max-h-128 ">
-        {blogs.map((blog: BlogResponse) => (
-          <div
-            onClick={() => router.push(`/${blog.id}`)}
-            key={blog.id}
-            className="p-4 rounded-lg border shadow-sm hover:shadow-md transition cursor-pointer"
-          >
-            <h2 className="text-xl font-semibold">{blog.title}</h2>
-            <p className="text-sm text-gray-600">By {blog.author.name}</p>
-            <p className="text-sm text-gray-500">
-              {new Date(blog.createdAt).toLocaleDateString()}
-            </p>
-          </div>
-        ))}
-      </div>
+      {totalPages == 0 ? (
+        <div className="h-24 flex items-center justify-center ">
+          <p>No Blogs Available!!!</p>
+        </div>
+      ) : (
+        <div className="max-h-128 ">
+          {blogs.map((blog: BlogResponse) => (
+            <div
+              onClick={() => router.push(`/${blog.id}`)}
+              key={blog.id}
+              className="p-4 rounded-lg border shadow-sm hover:shadow-md transition cursor-pointer"
+            >
+              <h2 className="text-xl font-semibold">{blog.title}</h2>
+              <p className="text-sm text-gray-600">By {blog.author.name}</p>
+              <p className="text-sm text-gray-500">
+                {new Date(blog.createdAt).toLocaleDateString()}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
 
-      <div className="flex justify-between items-center mt-6">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className={`px-4 py-2 rounded-lg ${
-            currentPage === 1
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-blue-600"
-          }`}
-        >
-          Previous
-        </button>
-        <p className="text-sm">
-          Page {currentPage} of {totalPages}
-        </p>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className={`px-4 py-2 rounded-lg ${
-            currentPage === totalPages
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-blue-500 text-white hover:bg-blue-600"
-          }`}
-        >
-          Next
-        </button>
-      </div>
+      {totalPages > 0 && (
+        <div className="flex justify-between items-center mt-6">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 rounded-lg ${
+              currentPage === 1
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            Previous
+          </button>
+          <p className="text-sm">
+            Page {currentPage} of {totalPages}
+          </p>
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 rounded-lg ${
+              currentPage === totalPages
+                ? "bg-gray-300 cursor-not-allowed"
+                : "bg-blue-500 text-white hover:bg-blue-600"
+            }`}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 };

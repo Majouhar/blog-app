@@ -13,13 +13,14 @@ type Blog {
 
 type Query {
   getAllPublishedBlogs(filter: BlogInput, page: Int, size: Int): PaginatedBlogs
+  getDrafts(filter: BlogInput, page: Int, size: Int): PaginatedBlogs
   getBlog(blogId: Int!): Blog
 }
 
 type Mutation {
   createBlog(blog: BlogInput!): Blog
   updateBlog(blog: BlogInput!): Blog
-  deleteBlog(id: Int!): Blog
+  deleteBlog(id: Int!): Boolean
 }
 
 input BlogInput {
